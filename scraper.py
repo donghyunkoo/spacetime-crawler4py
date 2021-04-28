@@ -1,4 +1,6 @@
 import re
+import time
+import json
 from urllib.parse import urlparse, urldefrag, urljoin
 from collections import defaultdict
 
@@ -106,7 +108,7 @@ def is_valid(url):
             return False
 
         # check for Traps
-        if checkTraps(url):
+        if checkTrap(url):
             return False
 
         # check if already visited
@@ -160,8 +162,8 @@ def checkTrap(url):
     # check to see if url matches any of the trap patterns
     if re.search(trapPaths, parsed_path) is not None:
         return True
-    if re.search(trapCalendar, parsed_path) is not None:
-        return True
+    #if re.search(trapCalendar, parsed_path) is not None:
+        #return True
     if re.search(trapGenome, parsed_path) is not None:
         return True
 
@@ -207,9 +209,9 @@ def updateSubdomainsCount(curr_dict):
 
         for domain, count in curr_dict.items():
             if domain in subdomain_dict:
-                subdomain_dict += count
+                subdomain_dict[domain] += count
             else:
-                subdomain_dict = count
+                subdomain_dict[domain] = count
 
         with open("subdomains.json", "w") as f:
             json.dump(subdomain_dict, f)
@@ -217,21 +219,21 @@ def updateSubdomainsCount(curr_dict):
     except:
         print("Opening new JSON file for ICS subdomain...")
         with open("subdomains.json", "w") as f:
-            json.dump(curr_dict, f)
+            json.dump(subdomain_dict, f)
 
 
-def updateTokenCount(curr):
+def updateTokenCount(curr_dict):
     # curr_dict is the default dict {token: count}
     # https://www.geeksforgeeks.org/read-json-file-using-python/
     try:
         with open("tokens.json") as f:
             token_dict = json.load(f)
 
-        for domain, count in curr_dict.items():
-            if domain in subdomain_dict:
-                token_dict += count
+        for token, count in curr_dict.items():
+            if token in token_dict:
+                token_dict[token] += count
             else:
-                token_dict = count
+                token_dict[token] = count
 
         with open("tokens.json", "w") as f:
             json.dump(token_dict, f)
@@ -239,7 +241,7 @@ def updateTokenCount(curr):
     except:
         print("Opening new JSON file for Tokens...")
         with open("token.json", "w") as f:
-            json.dump(curr_dict, f)
+            json.dump(token_dict, f)
 
 
 if __name__ == '__main__':
