@@ -1,16 +1,94 @@
 import re
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urldefrag, urljoin
 from collections import defaultdict
 
 from nltk.tokenize import TweetTokenizer
 
+from bs4 import BeautifulSoup
+
+
+highest_token_count = 0
+
+
 def scraper(url, resp):
+    subdomain_dict = defaultdict(int)
+    
     links = extract_next_links(url, resp)
+    results = [urldefrag(href).url for href in links]
+
+    for href in results:
+        if "ics.uci.edu" in href:
+            subdomain_dict[urlparse(href).netloc] += 1
+
+    if subdomain_dict:
+        updateSubdomainsCount(subdomain_dict)
+    
     return [link for link in links if is_valid(link)]
 
+
 def extract_next_links(url, resp):
-    # Implementation requred.
-    return list()
+    valid_links = []
+
+    if (resp.status==200) or (resp.status==201) or (resp.status==202):
+        print(resp.status, "| Scraping |", url)
+        bs = BeautifulSoup(resp.raw_resp.content, "html.parser")
+
+        addVisitedLink(url)
+
+        words = bs.get_text()
+
+        tokens = tokenizer(words)
+        unique_tokens = set(tokens)
+
+        if ((len(unique_tokens)/len(tokens)<=0.20)) or (len(tokens<=125)):
+            print("Not Content Rich!!!")
+            return []
+
+        else:
+            token_counts = computeTokenFrequency(tokens)
+            updateTokenCount(token_counts)
+
+            global highest_token_count
+
+            if len(token_counts) > highest_token_count:
+                highest_token_count = len(token_counts)
+
+                updateHighestTokenCount(highest_token_count, url)
+
+            # https://stackoverflow.com/questions/7370801/how-to-measure-elapsed-time-in-python
+            start_time = time.time()
+
+            for a in bs.findAll("a"):
+                href = a.get("href")
+
+                if urlparse(url).netloc == "":
+                    valid_links.append(href)
+                else:
+                    valid_links.append(urljoin(url, href))
+
+            end_time = time.time()
+
+            if (end_time - start_time) > 7:
+                print("Time Limit Exceeded!!!")
+                return []
+            else:
+                print("Returning {} link(s)".format(len(valid_links)))
+                return valid_links
+        
+    else:
+        print(resp.status, "| Not Scraping |", url)
+        return []
+
+def updateHighestTokenCount(count, url):
+    with open("most_words.txt", "w") as f:
+        f.write("URL: " + url + "\n")
+        f.write("Word Count: " + str(count) + "\n")
+        f.flush()
+
+def addVisitedLink(url):
+    with open("visited.txt", "a") as f:
+        f.write(url + "\n")
+        f.flush()
 
 def is_valid(url):
     try:
@@ -103,7 +181,7 @@ def tokenizer(text):
     try:
         tokens = TweetTokenizer().tokenize(text)
         stopwordLst = [line.strip() for line in open("stopwordlist.txt", encoding="utf-8")]
-        return [token.lower() for token in tokens if (token not in stopwordLst) and (token.isalnum()]
+        return [token.lower() for token in tokens if (token not in stopwordLst) and (token.isalnum())]
 
     except Exception as e:
         print(e)
@@ -166,7 +244,6 @@ def updateTokenCount(curr):
 
 if __name__ == '__main__':
     pass
-        
 
     
 
