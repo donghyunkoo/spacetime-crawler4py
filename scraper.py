@@ -25,7 +25,6 @@ def scraper(url, resp):
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
 
-    print([link for link in results if is_valid(link)])
     return [link for link in results if is_valid(link)]
 
 
@@ -103,9 +102,9 @@ def is_valid(url):
             return False
 
         if not re.match(patternA, parsed.netloc):
-	    return False
+            return False
 
-        if re.match(patternB, parsed.netloc):
+        if re.match(patternB, parsed.netloc + parsed.path):
             return False
 
         # check for Traps
