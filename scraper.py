@@ -42,7 +42,7 @@ def extract_next_links(url, resp):
         tokens = tokenizer(words)
         unique_tokens = set(tokens)
 
-        if ((len(unique_tokens)/len(tokens)<=0.20)) or (len(tokens<=125)):
+        if len(unique_tokens)/len(tokens)<=0.20 or len(tokens)<=125:
             print("Not Content Rich!!!")
             return []
 
