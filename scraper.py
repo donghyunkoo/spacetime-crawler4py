@@ -24,7 +24,8 @@ def scraper(url, resp):
 
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
-    
+
+    print(results)
     return [link for link in results if is_valid(link)]
 
 
