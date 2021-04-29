@@ -33,7 +33,7 @@ def extract_next_links(url, resp):
 
     if (resp.status==200) or (resp.status==201) or (resp.status==202):
         print(resp.status, "| Scraping |", url)
-        bs = BeautifulSoup(resp.raw_resp.content, "html.parser") #I'm getting an error here that says "'Response' object has no attribute 'raw_resp'"
+        bs = BeautifulSoup(resp.raw_response.content, "html.parser") #changed 'resp.raw_resp...' to 'resp.raw_response...'
 
         addVisitedLink(url)
 
