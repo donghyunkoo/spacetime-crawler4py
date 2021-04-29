@@ -218,7 +218,7 @@ def updateSubdomainsCount(curr_dict):
     except:
         print("Opening new JSON file for ICS subdomain...")
         with open("subdomains.json", "w") as f:
-            json.dump(subdomain_dict, f)
+            json.dump(curr_dict, f)
 
 
 def updateTokenCount(curr_dict):
