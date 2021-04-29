@@ -155,16 +155,15 @@ def checkTrap(url):
         return True
 
     # finish writing regular expression
-    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\/replytocom\=|\/pdf\/|\/download\/|mailto:\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=)")
-    #trapCalendar = re.compile(r"")
+    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\/replytocom\=|\/pdf\/|\/download\/|mailto:|\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=)")
     trapGenome = re.compile(r"\/(cgo|pgo|fgo)\/(p|f|c)[0-9]")
 
     # check to see if url matches any of the trap patterns
-    if re.search(trapPaths, parsed_path) is not None:
+    if re.search(trapPaths, url):
         return True
-    #if re.search(trapCalendar, parsed_path) is not None:
-        #return True
-    if re.search(trapGenome, parsed_path) is not None:
+    if re.search(trapPaths, parsed_path):
+        return True
+    if re.search(trapGenome, parsed_path):
         return True
 
     # query paramater indicates trap bc infinite possibilities
@@ -241,12 +240,11 @@ def updateTokenCount(curr_dict):
     except:
         print("Opening new JSON file for Tokens...")
         with open("token.json", "w") as f:
-            json.dump(token_dict, f)
+            json.dump(curr_dict, f)
 
 
 if __name__ == '__main__':
     pass
-
     
 
     
