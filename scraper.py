@@ -33,7 +33,7 @@ def extract_next_links(url, resp):
 
     if (resp.status==200) or (resp.status==201) or (resp.status==202):
         print(resp.status, "| Scraping |", url)
-        bs = BeautifulSoup(resp.raw_resp.content, "html.parser")
+        bs = BeautifulSoup(resp.raw_response.content, "html.parser")
 
         addVisitedLink(url)
 
@@ -219,7 +219,7 @@ def updateSubdomainsCount(curr_dict):
     except:
         print("Opening new JSON file for ICS subdomain...")
         with open("subdomains.json", "w") as f:
-            json.dump(subdomain_dict, f)
+            json.dump(curr_dict, f)
 
 
 def updateTokenCount(curr_dict):
@@ -241,17 +241,34 @@ def updateTokenCount(curr_dict):
     except:
         print("Opening new JSON file for Tokens...")
         with open("token.json", "w") as f:
-            json.dump(token_dict, f)
+            json.dump(curr_dict, f)
 
 
 if __name__ == '__main__':
-    pass
+    from requests.models import Response
+    the_response = Response()
+    the_response.status = 200
+    
+    tokens = tokenizer("LOL my name is Calvin Nguyen. LOL He's going to run 5 miles!!!")
+    lol = computeTokenFrequency(tokens)
+    updateSubdomainsCount(lol)
+    
+    scraper("https://www.geeksforgeeks.org/python-re-search-vs-re-match/", the_response)
+
+    extract_next_links("https://www.geeksforgeeks.org/python-re-search-vs-re-match/", the_response)
+
+    print(is_valid("https://www.geeksforgeeks.org/python-re-search-vs-re-match/"))
+    
+
+    print(tokens)
 
     
 
+    print(checkTrap("https://www.google.com/search?q=pgo+cgo+genomes&rlz=1C1CHBF_enUS878US878&ei=YKyJYPyCHKTK0PEPhaOSkAY&oq=pgo+cgo+genomes&gs_lcp=Cgdnd3Mtd2l6EANQ9hlY9hlgrRtoAHACeACAAXKIAdABkgEDMS4xmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=gws-wiz&ved=0ahUKEwj8sovUy6HwAhUkJTQIHYWRBGIQ4dUDCA4&uact=5"))
+    
+    scraper("https://www.ics.uci.edu/~thornton/ics46/ProjectGuide/Project1/", the_response)
     
     
-
     
 
 
