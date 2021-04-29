@@ -25,7 +25,7 @@ def scraper(url, resp):
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
     
-    return [link for link in links if is_valid(link)]
+    return [link for link in results if is_valid(link)]
 
 
 def extract_next_links(url, resp):
