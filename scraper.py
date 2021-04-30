@@ -60,7 +60,7 @@ def extract_next_links(url, resp):
             # https://stackoverflow.com/questions/7370801/how-to-measure-elapsed-time-in-python
             start_time = time.time()
 
-            for a in bs.findAll("a"):
+            for a in bs.findAll("a"):  #is the syntax supposed to be 'find_all'? The crawler runs tho so ig it doesn't matter lol
                 href = a.get("href")
 
                 if urlparse(url).netloc == "":
