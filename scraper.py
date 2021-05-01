@@ -42,6 +42,8 @@ def extract_next_links(url, resp):
         tokens = tokenizer(words)
         unique_tokens = set(tokens)
 
+        print(len(tokens)) #REMEMBER TO DELETE
+        print(len(unique_tokens)/len(tokens)) #REMEMBER TO DELETE
         if len(tokens) < 125 or len(unique_tokens)/len(tokens)<=0.20:
             print("Not Content Rich!!!")
             return []
