@@ -239,7 +239,7 @@ def updateTokenCount(curr_dict):
 
     except:
         print("Opening new JSON file for Tokens...")
-        with open("token.json", "w") as f:
+        with open("tokens.json", "w") as f:
             json.dump(curr_dict, f)
 
 
