@@ -192,7 +192,7 @@ def tokenizer(text):
         for token in tokens:
             token = token.lower()
 
-            if (token not in stopwordLst) and (token not in string.punctuation):
+            if (token not in stopwordLst) and (token not in string.punctuation) and (len(token) > 1):
 
                 for char in token:
                     if char not in string.digits + string.ascii_lowercase + string.punctuation:
