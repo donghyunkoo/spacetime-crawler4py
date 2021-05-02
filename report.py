@@ -1,4 +1,5 @@
 import json
+import string
 
 with open("report.txt", "w") as report:
 
@@ -13,7 +14,8 @@ with open("report.txt", "w") as report:
         tokens_dict = json.load(token_json)
 
     report.write("50 most common words:\n")
-    for token, count in sorted(tokens_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
+    words_only = {key: value for key, value in tokens_dict.items() if all(char in string.ascii_lowercase + string.punctuation for char in key)}
+    for token, count in sorted(words_only.items(), key=lambda x: x[1], reverse=True)[:50]:
         print(token.__repr__())
         report.write(token.strip() + ", " + str(count) + "\n")
     report.write("\n")
