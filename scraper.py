@@ -103,7 +103,7 @@ def is_valid(url):
             return False
 
         if not re.match(patternA, parsed.netloc):
-	    return False
+            return False
 
         if re.match(patternB, parsed.netloc):
             return False
