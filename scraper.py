@@ -4,6 +4,8 @@ import json
 from urllib.parse import urlparse, urldefrag, urljoin
 from collections import defaultdict
 
+import string
+
 from nltk.tokenize import TweetTokenizer
 
 from bs4 import BeautifulSoup
@@ -25,6 +27,8 @@ def scraper(url, resp):
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
 
+    print()
+
     return [link for link in results if is_valid(link)]
 
 
@@ -42,8 +46,6 @@ def extract_next_links(url, resp):
         tokens = tokenizer(words)
         unique_tokens = set(tokens)
 
-        print(len(tokens)) #REMEMBER TO DELETE
-        print(len(unique_tokens)/len(tokens)) #REMEMBER TO DELETE
         if len(tokens) < 125 or len(unique_tokens)/len(tokens)<=0.20:
             print("Not Content Rich!!!")
             return []
@@ -184,7 +186,21 @@ def tokenizer(text):
     try:
         tokens = TweetTokenizer().tokenize(text)
         stopwordLst = [line.strip() for line in open("stopwordlist.txt", encoding="utf-8")]
-        return [token.lower() for token in tokens if (token not in stopwordLst) and (token.isalnum())]
+        
+        ans = []
+
+        for token in tokens:
+            token = token.lower()
+
+            if token not in stopwordLst:
+
+                for char in token:
+                    if char not in string.digits + string.ascii_lowercase + string.punctuation:
+                        break
+
+                ans.append(token)
+
+        return ans
 
     except Exception as e:
         print(e)
