@@ -173,9 +173,9 @@ def checkTrap(url):
     # query paramater indicates trap bc infinite possibilities
     # ? starts a query
     # & separates parameter
-    if url.count("?") > 1:
+    if url.count("?") > 0:
         return True
-    if url.count("&") > 1:
+    if url.count("&") > 0:
         return True
     if url.count("%") > 0:
         return True
@@ -192,7 +192,7 @@ def tokenizer(text):
         for token in tokens:
             token = token.lower()
 
-            if token not in stopwordLst:
+            if (token not in stopwordLst) and (token not in string.punctuation):
 
                 for char in token:
                     if char not in string.digits + string.ascii_lowercase + string.punctuation:
