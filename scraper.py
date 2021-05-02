@@ -97,7 +97,7 @@ def updateHighestTokenCount(count, url):
 
 def addVisitedLink(url):
     if new_visitedFile:
-        new_visited = False
+        new_visitedFile = False
         open_permission = "w"
     else:
         open_permission = "a"
