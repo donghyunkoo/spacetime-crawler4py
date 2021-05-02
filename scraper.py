@@ -96,6 +96,8 @@ def updateHighestTokenCount(count, url):
         f.flush()
 
 def addVisitedLink(url):
+    global new_visitedFile
+
     if new_visitedFile:
         new_visitedFile = False
         open_permission = "w"
