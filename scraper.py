@@ -157,7 +157,7 @@ def checkTrap(url):
         return True
 
     # finish writing regular expression
-    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\/replytocom\=|\/pdf\/|\/download\/|mailto:|\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=)")
+    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\?replytocom\=|\/pdf\/|\/download\/|mailto:|\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=)")
     trapGenome = re.compile(r"\/(cgo|pgo|fgo)\/(p|f|c)[0-9]")
 
     # check to see if url matches any of the trap patterns
