@@ -1,2 +1,2 @@
-URL: https://evoke.ics.uci.edu/viewing-the-world-through-technologys-eyes
-Word Count: 6177
+URL: http://www.ics.uci.edu/~shantas/publications/20-secret-sharing-aggregation-TKDE-shantanu
+Word Count: 62211
