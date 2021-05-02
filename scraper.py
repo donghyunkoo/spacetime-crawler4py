@@ -174,7 +174,7 @@ def checkTrap(url):
         return True
 
     # finish writing regular expression
-    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\?replytocom\=|\/pdf\/|\/download\/|mailto:|\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=)")
+    trapPaths = re.compile(r"(\?page_id\=|\/blog\/|\/tag\/|\/calendar\/|\/events\/|\?replytocom\=|\/pdf\/|\/download\/|mailto:|\?tab_files\=|\?letter\=|\.DS_STORE|\.Z|\.Thesis|\?share\=|\?ical\=|\?rev\=|\?do\=)")
     trapGenome = re.compile(r"\/(cgo|pgo|fgo)\/(p|f|c)[0-9]")
 
     # check to see if url matches any of the trap patterns
@@ -188,9 +188,9 @@ def checkTrap(url):
     # query paramater indicates trap bc infinite possibilities
     # ? starts a query
     # & separates parameter
-    if url.count("?") > 0:
+    if url.count("?") + url.count("&") > 1:
         return True
-    # if url.count("&") > 0:
+    # if url.count("&") > 1:
         # return True
     # if url.count("%") > 0:
         # return True
