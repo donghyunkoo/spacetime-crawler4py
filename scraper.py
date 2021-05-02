@@ -25,7 +25,7 @@ def scraper(url, resp):
     results = [urldefrag(href).url for href in links]
 
     for href in results:
-        netloc = urlparse(href.netloc)
+        netloc = urlparse(href).netloc
         netloc = netloc.replace("www.", "")
 
         if ".ics.uci.edu" in netloc:
