@@ -25,8 +25,11 @@ def scraper(url, resp):
     results = [urldefrag(href).url for href in links]
 
     for href in results:
-        if ".ics.uci.edu" in href:
-            subdomain_dict[urlparse(href).netloc] += 1
+        netloc = urlparse(href.netloc)
+        netloc = netloc.replace("www.", "")
+
+        if ".ics.uci.edu" in netloc:
+            subdomain_dict[netloc] += 1
 
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
@@ -187,10 +190,10 @@ def checkTrap(url):
     # & separates parameter
     if url.count("?") > 0:
         return True
-    if url.count("&") > 0:
-        return True
-    if url.count("%") > 0:
-        return True
+    # if url.count("&") > 0:
+        # return True
+    # if url.count("%") > 0:
+        # return True
 
     return False
 
