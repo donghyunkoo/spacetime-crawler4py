@@ -11,6 +11,10 @@ from nltk.tokenize import TweetTokenizer
 from bs4 import BeautifulSoup
 
 
+new_visitedFile = True
+new_subdomainFile = True
+new_tokenFile = True
+
 highest_token_count = 0
 
 
@@ -86,13 +90,19 @@ def extract_next_links(url, resp):
         return []
 
 def updateHighestTokenCount(count, url):
-    with open("most_words.txt", "w") as f:
+    with open("most_words.txt", "w", encoding="utf-8") as f:
         f.write("URL: " + url + "\n")
         f.write("Word Count: " + str(count) + "\n")
         f.flush()
 
 def addVisitedLink(url):
-    with open("visited.txt", "a") as f:
+    if new_visitedFile:
+        new_visited = False
+        open_permission = "w"
+    else:
+        open_permission = "a"
+
+    with open("visited.txt", open_permission, encoding="utf-8") as f:
         f.write(url + "\n")
         f.flush()
 
@@ -220,7 +230,9 @@ def computeTokenFrequency(tokens):
 def updateSubdomainsCount(curr_dict):
     # curr_dict is the default dict {hostname: count}
     # https://www.geeksforgeeks.org/read-json-file-using-python/
-    try:
+    global new_subdomainFile
+
+    if not new_subdomainFile:
         with open("subdomains.json") as f:
             subdomain_dict = json.load(f)
 
@@ -233,7 +245,8 @@ def updateSubdomainsCount(curr_dict):
         with open("subdomains.json", "w") as f:
             json.dump(subdomain_dict, f)
 
-    except:
+    else:
+        new_subdomainFile = False
         print("Opening new JSON file for ICS subdomain...")
         with open("subdomains.json", "w") as f:
             json.dump(curr_dict, f)
@@ -242,7 +255,9 @@ def updateSubdomainsCount(curr_dict):
 def updateTokenCount(curr_dict):
     # curr_dict is the default dict {token: count}
     # https://www.geeksforgeeks.org/read-json-file-using-python/
-    try:
+    global new_tokenFile
+
+    if not new_tokenFile:
         with open("tokens.json") as f:
             token_dict = json.load(f)
 
@@ -255,7 +270,8 @@ def updateTokenCount(curr_dict):
         with open("tokens.json", "w") as f:
             json.dump(token_dict, f)
 
-    except:
+    else:
+        new_tokenFile = False
         print("Opening new JSON file for Tokens...")
         with open("tokens.json", "w") as f:
             json.dump(curr_dict, f)
