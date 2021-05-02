@@ -25,7 +25,6 @@ def scraper(url, resp):
     if subdomain_dict:
         updateSubdomainsCount(subdomain_dict)
 
-    print([link for link in results if is_valid(link)])
     return [link for link in results if is_valid(link)]
 
 
@@ -43,7 +42,9 @@ def extract_next_links(url, resp):
         tokens = tokenizer(words)
         unique_tokens = set(tokens)
 
-        if len(unique_tokens)/len(tokens)<=0.20 or len(tokens)<=125:
+        print(len(tokens)) #REMEMBER TO DELETE
+        print(len(unique_tokens)/len(tokens)) #REMEMBER TO DELETE
+        if len(tokens) < 125 or len(unique_tokens)/len(tokens)<=0.20:
             print("Not Content Rich!!!")
             return []
 
@@ -61,7 +62,7 @@ def extract_next_links(url, resp):
             # https://stackoverflow.com/questions/7370801/how-to-measure-elapsed-time-in-python
             start_time = time.time()
 
-            for a in bs.findAll("a"):
+            for a in bs.findAll("a"):  #is the syntax supposed to be 'find_all'? The crawler runs tho so ig it doesn't matter lol
                 href = a.get("href")
 
                 if urlparse(url).netloc == "":
@@ -105,7 +106,7 @@ def is_valid(url):
         if not re.match(patternA, parsed.netloc):
             return False
 
-        if re.match(patternB, parsed.netloc):
+        if re.match(patternB, parsed.netloc + parsed.path):
             return False
 
         # check for Traps
@@ -240,7 +241,7 @@ def updateTokenCount(curr_dict):
 
     except:
         print("Opening new JSON file for Tokens...")
-        with open("token.json", "w") as f:
+        with open("tokens.json", "w") as f:
             json.dump(curr_dict, f)
 
 
