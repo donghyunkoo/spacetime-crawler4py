@@ -25,7 +25,7 @@ def scraper(url, resp):
     results = [urldefrag(href).url for href in links]
 
     for href in results:
-        if "ics.uci.edu" in href:
+        if ".ics.uci.edu" in href:
             subdomain_dict[urlparse(href).netloc] += 1
 
     if subdomain_dict:
